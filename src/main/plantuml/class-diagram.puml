@@ -1,0 +1,40 @@
+@startuml
+
+title Job Manager - Class Diagram
+
+
+enum JobStatus{
+    QUEUED
+    RUNNING
+    SUCCESS
+    FAILED
+}
+
+interface Job <? extends Comparable>{
+  {abstract}+void execute()
+  {abstract}+JobStatus getJobStatus()
+  {abstract}+Int getPriority()
+  {abstract}+String getName()
+  +Int compareTo(Job job)
+}
+
+class SampleJob{
+}
+
+class JobManager<< (S,#FF7700) Singleton >>{
+    PriorityQueue<Job> jobsToExecute
+    {static} -JobManager INSTANCE
+    -JobManager()
+    {static} +JobManager getInstance()
+    +void run()
+}
+
+
+
+Job -right-> JobStatus
+JobManager -right-> JobManager
+JobManager o-right->Job : holds >
+
+Job <|-- SampleJob
+
+@enduml
